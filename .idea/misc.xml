@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_add_wrestler.xml" value="0.33" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_event.xml" value="0.2578125" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_main_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_roster.xml" value="0.25" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_view_details.xml" value="0.3604060913705584" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_view_wrestler.xml" value="0.19067028985507245" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/roster_list.xml" value="0.271875" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/viewdetailslist.xml" value="0.365625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.271875" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

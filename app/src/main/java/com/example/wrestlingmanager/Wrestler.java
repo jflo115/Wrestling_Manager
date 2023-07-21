@@ -25,7 +25,7 @@ public class Wrestler implements Serializable {
     private String name; //Name of wrestler
     private int grade; // Grade level of Wrestler, can only be from 9 - 12
     private int wins, losses; // Number of wins and losses of Wrestler
-    private Boolean gender;
+    private Boolean gender; //True for Boy, False for Girl
     //private Record record; //Current record of Wrestler;
 
 

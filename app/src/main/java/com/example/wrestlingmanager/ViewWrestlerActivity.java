@@ -37,4 +37,9 @@ public class ViewWrestlerActivity extends AppCompatActivity {
         intent.putExtra("addMatch",(Serializable) wrestler);
         startActivity(intent);
     }
+
+    public void onViewWrestlerBackClicked(View view) {
+        Intent intent = new Intent(this, ViewDetailsActivity.class);
+        startActivity(intent);
+    }
 }

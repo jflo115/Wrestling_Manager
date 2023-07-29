@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ViewWrestlerActivity extends AppCompatActivity {
     private Wrestler wrestler;
@@ -24,6 +25,26 @@ public class ViewWrestlerActivity extends AppCompatActivity {
         WrestlerName.setText(wrestler.getName());
         TextView WrestlerRecord = findViewById(R.id.WrestlerRecord);
         WrestlerRecord.setText(wrestler.toStringRecord());
+        TextView WrestlerAccomplishments = findViewById(R.id.ViewWrestlerAccomplishments);
+        String AccText = "";
+        ArrayList<String> acc = new ArrayList<>();
+        acc = wrestler.getAccomplishments();
+        if(acc.isEmpty()) {
+            AccText = "None";
+        }
+        else{
+            int n = acc.size();
+            for(int i = 0; i < n;i++) {
+                if(i == n-1) {
+                    AccText += acc.get(i);
+                }
+                else{
+                    AccText += acc.get(i);
+                    AccText += ", ";
+                }
+            }
+        }
+        WrestlerAccomplishments.setText(AccText);
     }
 
     public void onEditWrestlerClicked(View view) {

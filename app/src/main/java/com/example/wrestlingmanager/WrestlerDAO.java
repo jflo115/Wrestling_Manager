@@ -19,7 +19,7 @@ public interface WrestlerDAO {
     @Insert
     List<Long> insertAll(List<Wrestler> wrestlerList);
 
-    @Query("Select * FROM `wrestler_items` WHERE `id`=:id")
+    @Query("SELECT * FROM `wrestler_items` WHERE `id`=:id")
     Wrestler get(long id);
 
     @Query("SELECT * FROM `wrestler_items`")

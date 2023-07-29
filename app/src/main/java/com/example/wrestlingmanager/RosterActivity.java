@@ -48,8 +48,9 @@ public class RosterActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        wrestlerDAO = WrestlerDatabase.getSingleton(this).wrestlerDao();
-        List<Wrestler> wrestlers2 = wrestlerDAO.getAll();
+        //Room not working as of rn
+        //wrestlerDAO = WrestlerDatabase.getSingleton(this).wrestlerDao();
+        //List<Wrestler> wrestlers2 = wrestlerDAO.getAll();
 
         roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
         if(roster == null) {

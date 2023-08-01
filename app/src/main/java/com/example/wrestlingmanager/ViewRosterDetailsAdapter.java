@@ -66,7 +66,7 @@ public class ViewRosterDetailsAdapter extends BaseAdapter {
         }
         //Set text into TextViews
         String setTxt = roster.get(i).getName() + "   Grade:" + String.valueOf(roster.get(i).getGrade());
-        String record = String.valueOf(roster.get(i).getWins()) + "-" + String.valueOf(roster.get(i).getLosses());
+        String record = roster.get(i).toStringRecord();
         setTxt = setTxt + "    " + record;
         holder.name.setText(setTxt);
         return view;

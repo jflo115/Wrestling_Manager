@@ -23,15 +23,16 @@ public class Record implements Serializable {
         losses = 0;
     }
 
-    public void addWin(Match match) {
+    public void addMatch(Match match) {
         this.matches.add(match);
-        wins++;
+        if(match.getWin()) {
+            wins++;
+        }
+        else{
+            losses++;
+        }
     }
 
-    public void addLoss(Match match) {
-        this.matches.add(match);
-        losses++;
-    }
 
     public void setMatches(@NonNull ArrayList<Match> matches) {
         this.matches = matches;

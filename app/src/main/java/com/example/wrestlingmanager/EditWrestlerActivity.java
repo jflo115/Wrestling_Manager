@@ -15,13 +15,17 @@ import java.util.ArrayList;
 
 public class EditWrestlerActivity extends AppCompatActivity {
     private Wrestler wrestler;
+    private ArrayList<Wrestler> roster;
+    private int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_wrestler);
 
-        wrestler = (Wrestler) getIntent().getSerializableExtra("editWrestler");
+        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editWrestler");
+        int pos = getIntent().getIntExtra("position",0);
+        wrestler = roster.get(pos);
 
         //Set up Textviews
         TextView WrestlerName = findViewById(R.id.EditWrestlerNameText);
@@ -65,6 +69,8 @@ public class EditWrestlerActivity extends AppCompatActivity {
 
         wrestler.setName(WrestlerName.getText().toString());
         wrestler.setGrade(Integer.parseInt(WrestlerGrade.getText().toString()));
+
+        //TODO- REFACTOR
         if(!genderSwitch.isChecked()) {
             wrestler.setGender(true);
         }
@@ -80,7 +86,8 @@ public class EditWrestlerActivity extends AppCompatActivity {
 
         //return to prior Activity while sending Wrestler back with new information
         Intent intent = new Intent(this,ViewWrestlerActivity.class);
-        intent.putExtra("viewWrestler",wrestler);
+        intent.putExtra("viewWrestler",roster);
+        intent.putExtra("position",pos);
         startActivity(intent);
 
 

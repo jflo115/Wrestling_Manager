@@ -70,7 +70,9 @@ public class ViewDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 Intent intent = new Intent(ViewDetailsActivity.this,ViewWrestlerActivity.class);
-                intent.putExtra("viewWrestler", (Serializable) list.getItemAtPosition(pos));
+                intent.putExtra("viewWrestler", (Serializable) roster);
+                intent.putExtra("position",pos);
+                //intent.putExtra("viewWrestler", (Serializable) list.getItemAtPosition(pos));
                 startActivity(intent);
             }
         });

@@ -24,7 +24,7 @@ public class Wrestler implements Serializable {
     private ArrayList<String> accomplishments; // Accomplishments from the year, Can be worded any way
     private String name; //Name of wrestler
     private int grade; // Grade level of Wrestler, can only be from 9 - 12
-    private int wins, losses; // Number of wins and losses of Wrestler
+    //private int wins, losses; // Number of wins and losses of Wrestler
     private Boolean gender; //True for Boy, False for Girl
     private Record record; //Current record of Wrestler;
 
@@ -33,8 +33,6 @@ public class Wrestler implements Serializable {
     public Wrestler(@NonNull String name, int grade, boolean gender) {
         this.name = name;
         this.grade = grade;
-        this.wins = 0;
-        this.losses = 0;
         this.accomplishments = new ArrayList<String>();
         //accomplishments.add("None");
         this.record = new Record();
@@ -58,21 +56,6 @@ public class Wrestler implements Serializable {
         this.grade = grade;
     }
 
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public int getWins() {
-        return wins;
-    }
-
-    public void setLosses(int losses) {
-        this.losses = losses;
-    }
-
-    public int getLosses() {
-        return losses;
-    }
 
     @NonNull
     public ArrayList<String> getAccomplishments() {
@@ -100,6 +83,6 @@ public class Wrestler implements Serializable {
     }
 
     public String toStringRecord() {
-        return String.valueOf(this.wins) + "-" + String.valueOf(this.losses);
+        return String.valueOf(this.record.getWins()) + "-" + String.valueOf(this.record.getLosses());
     }
 }

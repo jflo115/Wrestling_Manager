@@ -66,16 +66,23 @@ public class AddMatchActivity extends AppCompatActivity {
     }
 
     public void onAddMatchClicked2(View view) {
+        String name = Name.getText().toString();
+        String school = School.getText().toString();
         String scoreOrTime = (Pin.isChecked()) ? Time.getText().toString() : Score.getText().toString();
-        wrestler.getRecord().addMatch(new Match(
-                Name.getText().toString(),
-                School.getText().toString(),
-                Win.isChecked(), scoreOrTime
-        ));
-        Intent intent = new Intent(this,ViewWrestlerActivity.class);
-        intent.putExtra("viewWrestler", (Serializable) roster);
-        intent.putExtra("position",pos);
-        startActivity(intent);
+        if(name.equals("") || school.equals("") || scoreOrTime.equals("")) {
+            Utilities.showAlert(this,"Fill out all boxes or press back");
+        }
+        else {
+            wrestler.getRecord().addMatch(new Match(
+                    Name.getText().toString(),
+                    School.getText().toString(),
+                    Win.isChecked(), scoreOrTime
+            ));
+            Intent intent = new Intent(this, ViewWrestlerActivity.class);
+            intent.putExtra("viewWrestler", (Serializable) roster);
+            intent.putExtra("position", pos);
+            startActivity(intent);
+        }
     }
 
 

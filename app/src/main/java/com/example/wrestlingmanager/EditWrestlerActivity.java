@@ -67,28 +67,37 @@ public class EditWrestlerActivity extends AppCompatActivity {
         Switch genderSwitch = findViewById(R.id.EditWrestlerGenderSwitch);
         TextView accomplishments = findViewById(R.id.EditWrestlerAccText);
 
-        wrestler.setName(WrestlerName.getText().toString());
-        wrestler.setGrade(Integer.parseInt(WrestlerGrade.getText().toString()));
-
-        //TODO- REFACTOR
-        if(!genderSwitch.isChecked()) {
-            wrestler.setGender(true);
+        if(WrestlerName.getText().toString().equals("") || WrestlerGrade.getText().toString().equals("")){
+            Utilities.showAlert(this,"Fill out all boxes or press back");
         }
         else {
-            wrestler.setGender(false);
-        }
-        String text = accomplishments.getText().toString();
-        String[] lines = text.split(System.lineSeparator());
-        wrestler.getAccomplishments().clear();
-        for(int i = 0; i < lines.length;i++) {
-            wrestler.getAccomplishments().add(lines[i]);
-        }
+            wrestler.setName(WrestlerName.getText().toString());
+            wrestler.setGrade(Integer.parseInt(WrestlerGrade.getText().toString()));
 
-        //return to prior Activity while sending Wrestler back with new information
-        Intent intent = new Intent(this,ViewWrestlerActivity.class);
-        intent.putExtra("viewWrestler",roster);
-        intent.putExtra("position",pos);
-        startActivity(intent);
+            //TODO- REFACTOR
+            if (!genderSwitch.isChecked()) {
+                wrestler.setGender(true);
+            } else {
+                wrestler.setGender(false);
+            }
+            String text = accomplishments.getText().toString();
+            if (text.equals("")) {
+                wrestler.getAccomplishments().clear();
+                wrestler.getAccomplishments().add("none");
+            } else {
+                String[] lines = text.split(System.lineSeparator());
+                wrestler.getAccomplishments().clear();
+                for (int i = 0; i < lines.length; i++) {
+                    wrestler.getAccomplishments().add(lines[i]);
+                }
+            }
+
+            //return to prior Activity while sending Wrestler back with new information
+            Intent intent = new Intent(this, ViewWrestlerActivity.class);
+            intent.putExtra("viewWrestler", roster);
+            intent.putExtra("position", pos);
+            startActivity(intent);
+        }
 
 
     }

@@ -1,6 +1,7 @@
 package com.example.wrestlingmanager;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,9 +71,11 @@ public class MatchListAdapter extends BaseAdapter {
         text += "   ";
         if(matches.get(i).getWin()) {
             text += "Win   ";
+            holder.name.setTextColor(0xFF00BB00);
         }
         else{
             text += "Loss   ";
+            holder.name.setTextColor(0xFF8B0000);
         }
         text += matches.get(i).getScore();
         holder.name.setText(text);

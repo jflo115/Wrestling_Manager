@@ -63,7 +63,8 @@ public class Wrestler implements Serializable {
     }
 
     public void setAccomplishments(ArrayList<String> accomplishments){
-        this.accomplishments = accomplishments;
+        this.accomplishments.clear();
+        this.accomplishments.addAll(accomplishments);
     }
 
     public void setRecord(Record record) {

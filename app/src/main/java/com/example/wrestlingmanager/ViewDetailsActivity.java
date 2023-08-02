@@ -21,6 +21,7 @@ public class ViewDetailsActivity extends AppCompatActivity {
     private ViewRosterDetailsAdapter adapter;
     private ArrayList<Wrestler> roster;
     private RosterFilter rosterFilter = new RosterFilter();
+    private ArrayList<Wrestler> filtered = new ArrayList<Wrestler>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +30,10 @@ public class ViewDetailsActivity extends AppCompatActivity {
 
         //Receive roster from past Activity
         roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("viewRoster");
-        ArrayList<Wrestler> filt = new ArrayList<Wrestler>();
-        filt = rosterFilter.filterBoys(roster);
+        filtered = rosterFilter.filterBoys(roster);
         //Set up adapter
         list = (ListView) findViewById(R.id.listViewRoster);
-        adapter = new ViewRosterDetailsAdapter(this,filt);
+        adapter = new ViewRosterDetailsAdapter(this,filtered);
         list.setAdapter(adapter);
 
         //TabLayout Setup
@@ -41,7 +41,6 @@ public class ViewDetailsActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                ArrayList<Wrestler> filtered = new ArrayList<Wrestler>();
                 switch(tab.getPosition()) {
                     case 0: filtered = rosterFilter.filterBoys(roster);
                         adapter.changeList(filtered);
@@ -70,11 +69,20 @@ public class ViewDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 Intent intent = new Intent(ViewDetailsActivity.this,ViewWrestlerActivity.class);
+                Wrestler temp = filtered.get(pos);
+                int realPos = roster.indexOf(temp);
                 intent.putExtra("viewWrestler", (Serializable) roster);
-                intent.putExtra("position",pos);
+
+                intent.putExtra("position",realPos);
                 //intent.putExtra("viewWrestler", (Serializable) list.getItemAtPosition(pos));
                 startActivity(intent);
             }
         });
+    }
+
+    public void onViewDetailsBackClicked(View view) {
+        Intent intent = new Intent(this,RosterActivity.class);
+        intent.putExtra("Roster",(Serializable) roster);
+        startActivity(intent);
     }
 }

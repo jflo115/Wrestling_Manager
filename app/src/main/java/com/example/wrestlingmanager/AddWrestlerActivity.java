@@ -9,6 +9,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.function.ToDoubleBiFunction;
 
 public class AddWrestlerActivity extends AppCompatActivity {
 
@@ -34,14 +35,20 @@ public class AddWrestlerActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.addWrestlerName);
         TextView grade = findViewById(R.id.addWrestlerGrade);
         Switch genderSwitch = findViewById(R.id.WrestlerSwitch);
-        String gradeString = grade.getText().toString();
-        int gradeInt = Integer.parseInt(gradeString);
-        Wrestler newWrestler = new Wrestler(name.getText().toString(),gradeInt,!genderSwitch.isChecked());
-        roster.add(newWrestler);
+        if(name.getText().toString().equals("") || grade.getText().toString().equals("")) {
+            Utilities.showAlert(this,"Fil out all boxes or press back");
+            //TODO fix the other classes like above
+        }
+        else {
+            String gradeString = grade.getText().toString();
+            int gradeInt = Integer.parseInt(gradeString);
+            Wrestler newWrestler = new Wrestler(name.getText().toString(), gradeInt, !genderSwitch.isChecked());
+            roster.add(newWrestler);
 
-        //return to prior Activity while sending Roster back with new Wrestler
-        Intent intent = new Intent(this,RosterActivity.class);
-        intent.putExtra("Roster",roster);
-        startActivity(intent);
+            //return to prior Activity while sending Roster back with new Wrestler
+            Intent intent = new Intent(this, RosterActivity.class);
+            intent.putExtra("Roster", roster);
+            startActivity(intent);
+        }
     }
 }

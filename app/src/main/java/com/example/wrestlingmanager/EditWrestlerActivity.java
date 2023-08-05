@@ -24,7 +24,7 @@ public class EditWrestlerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_wrestler);
 
         roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editWrestler");
-        int pos = getIntent().getIntExtra("position",0);
+        pos = getIntent().getIntExtra("position",0);
         wrestler = roster.get(pos);
 
         //Set up Textviews

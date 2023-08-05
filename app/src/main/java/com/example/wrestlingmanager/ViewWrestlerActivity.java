@@ -61,8 +61,12 @@ public class ViewWrestlerActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int post, long l) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int Matchpos, long l) {
+                Intent intent = new Intent(ViewWrestlerActivity.this,EditMatchActivity.class);
+                intent.putExtra("editMatch",(Serializable) roster);
+                intent.putExtra("position",pos);
+                intent.putExtra("MatchPosition", Matchpos);
+                startActivity(intent);
             }
 
         });

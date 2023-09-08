@@ -2,6 +2,7 @@ package com.example.wrestlingmanager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 //Utilities is a Class used to build alerts that pop up when things dont go the way they are supposed to go.
 public class Utilities {
@@ -19,4 +20,6 @@ public class Utilities {
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
     }
+
+
 }

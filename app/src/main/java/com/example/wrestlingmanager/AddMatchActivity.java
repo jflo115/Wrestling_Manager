@@ -73,6 +73,12 @@ public class AddMatchActivity extends AppCompatActivity {
             Utilities.showAlert(this,"Fill out all boxes or press back");
         }
         else {
+            if(Pin.isChecked() && Win.isChecked()){
+                scoreOrTime = "WBF " + scoreOrTime;
+            }
+            else if(Pin.isChecked() && !Win.isChecked()){
+                scoreOrTime = "LBF " + scoreOrTime;
+            }
             wrestler.getRecord().addMatch(new Match(
                     Name.getText().toString(),
                     School.getText().toString(),

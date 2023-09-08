@@ -101,7 +101,7 @@ public class TestRosterFill {
         acc.clear();
         roster.add(Armaan);
 
-
+        //Beni
         Wrestler Beni = new Wrestler("Beni Magyar", 12, true);
         Beni.getRecord().addMatch(new Match("Amor","Newport Harbor",win,"WBF 2:17"));
         Beni.getRecord().addMatch(new Match("Herrera","Glendora",win,"WBF 1:12"));
@@ -172,12 +172,39 @@ public class TestRosterFill {
         Wrestler Joseph = new Wrestler("Joseph Tierney", 11, true);
         Wrestler Milla = new Wrestler("Milla Kulish", 9, false);
         Wrestler Lily = new Wrestler("Lily Mendez", 10, false);
-
-
+        Wrestler Brandon = new Wrestler("Brandon Chiang", 10, true);
+        Wrestler Hadi = new Wrestler("Hadi Hammoudeh", 11, true);
+        Wrestler Jeremiah = new Wrestler("Jeremiah Herrington",11,true);
+        Wrestler Shaan = new Wrestler("Shaan Patel",11,true);
+        Wrestler Jacob = new Wrestler("Jacob Saucedo",11,true);
+        Wrestler Chad = new Wrestler("Chad Russom", 9, true);
+        Wrestler Alek = new Wrestler("Alek Culciar", 10, true);
+        Wrestler Kyle = new Wrestler("Kyle Pajouhesh", 11, true);
+        Wrestler Cevin = new Wrestler("Cevin Blanco",9,true);
+        Wrestler Sage = new Wrestler("Sage Valk",9,true);
+        Wrestler Emin = new Wrestler("Emin Aslan",10,true);
+        Wrestler Siavash = new Wrestler("Siavash Mavandadnejad",10,true);
+        Wrestler James = new Wrestler("James York",9, true);
 
         roster.add(Joseph);
         roster.add(Milla);
         roster.add(Lily);
+        roster.add(Brandon);
+        roster.add(Hadi);
+        roster.add(Jeremiah);
+        roster.add(Shaan);
+        roster.add(Jacob);
+        roster.add(Chad);
+        roster.add(Alek);
+        roster.add(Kyle);
+        roster.add(Cevin);
+        roster.add(Sage);
+        roster.add(Emin);
+        roster.add(Siavash);
+        roster.add(James);
+
+
+
         return roster;
     }
 }

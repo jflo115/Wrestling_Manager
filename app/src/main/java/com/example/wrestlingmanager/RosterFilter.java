@@ -10,7 +10,7 @@ public class RosterFilter {
 
     }
 
-    public ArrayList<Wrestler> filterGirls(ArrayList<Wrestler> roster) {
+    public static ArrayList<Wrestler> filterGirls(ArrayList<Wrestler> roster) {
         ArrayList<Wrestler> filtered = new ArrayList<Wrestler>();
         for(Wrestler wrestler : roster) {
             if(!wrestler.getGender()) {
@@ -20,7 +20,7 @@ public class RosterFilter {
         return filtered;
     }
 
-    public ArrayList<Wrestler> filterBoys(ArrayList<Wrestler> roster) {
+    public static ArrayList<Wrestler> filterBoys(ArrayList<Wrestler> roster) {
         ArrayList<Wrestler> filtered = new ArrayList<Wrestler>();
         for(Wrestler wrestler : roster) {
             if(wrestler.getGender()) {

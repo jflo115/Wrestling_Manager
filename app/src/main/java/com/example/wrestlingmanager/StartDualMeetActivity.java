@@ -1,0 +1,271 @@
+package com.example.wrestlingmanager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+public class StartDualMeetActivity extends AppCompatActivity {
+
+    private ConstraintLayout scene1;
+    private ConstraintLayout scene2;
+    private String[] weights = {"106","113","120","126","132","138","144","150","157","165","175","190","215","285"};
+    private ArrayList<Wrestler> roster;
+    private ArrayList<Integer> selectedIND;
+    private Wrestler[] lineup;
+    private int[] lineupIND;
+    private String[] oppNames;
+    private Match[] matches = new Match[14];
+    private String schoolName;
+    //String selectedWeight = "";
+    private int selectedWeight = -1;
+    private int currMatchNumber = 0;
+    private TextView schoolNameTextview,IrvineWrestlerTextview,OppWrestlerTextview, WeightClassTextview;
+    private TextView HomeScore, OppScore, HomeTime, OppTime;
+    private CheckBox HomePin, OppPin;
+    private AutoCompleteTextView autoCompleteTextView;
+    private ArrayAdapter<String> adapterItems;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start_dual_meet);
+
+        //Get Extras from intent
+        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
+        selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
+        lineupIND = (int[]) getIntent().getSerializableExtra("Lineup");
+        oppNames = (String[]) getIntent().getSerializableExtra("oppNames");
+        schoolName = (String) getIntent().getStringExtra("schoolName");
+
+        //Set up lineup
+        lineup = new Wrestler[14];
+        for(int i = 0; i < lineup.length;i++){
+            if(lineupIND[i] != -1) {
+                lineup[i] = roster.get(lineupIND[i]);
+            }
+            else{
+                lineup[i] = null;
+            }
+        }
+
+        //Set up Constraint Layouts
+        scene1 = findViewById(R.id.DualMeetFirstLayout);
+        scene2 = findViewById(R.id.DualMeetInitiatedLayout);
+
+        //Set up Visibilities of Scenes
+        scene1.setVisibility(View.VISIBLE);
+        scene2.setVisibility(View.GONE);
+
+        // Set up Title textview
+        TextView title = findViewById(R.id.DualMeetTitle);
+        title.setText("Irvine vs " + schoolName);
+
+        // Set up Wrestler and Opponent Names Textviews
+        IrvineWrestlerTextview = findViewById(R.id.startDualMeetWrestlerNameText);
+        schoolNameTextview = findViewById(R.id.StartDualMeetOppSchoolText);
+        OppWrestlerTextview = findViewById(R.id.startDualMeetOppText);
+        WeightClassTextview = findViewById(R.id.DualMeetWeightClass);
+
+        //Set up Score/Time Textviews and Pin checkboxes
+        HomeScore = findViewById(R.id.DualMeetWrestlerScore);
+        OppScore = findViewById(R.id.DualMeetOppScore);
+        HomeTime = findViewById(R.id.DualMeetWrestlerTime);
+        OppTime = findViewById(R.id.DualMeetOppTime);
+        HomePin = findViewById(R.id.DualMeetWrestlerPinBox);
+        OppPin = findViewById(R.id.DualMeetOppPinBox);
+
+        //Set up DropDown Box
+        autoCompleteTextView = findViewById(R.id.auto_complete_txt);
+        adapterItems = new ArrayAdapter<String>(this,R.layout.weight_list,weights);
+        autoCompleteTextView.setAdapter(adapterItems);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                selectedWeight = i;
+                Toast.makeText(StartDualMeetActivity.this,item,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    public void onStartDualButton2Clicked(View view) {
+        scene1.setVisibility(View.GONE);
+        scene2.setVisibility(View.VISIBLE);
+
+        currMatchNumber++;  //Will be 1 at this point
+        schoolNameTextview.setText(schoolName);
+        WeightClassTextview.setText(weights[selectedWeight]);
+        if(oppNames[selectedWeight].equals("") || oppNames[selectedWeight].equals("BYE")){
+            OppWrestlerTextview.setText("Bye");
+        }
+        else {
+            OppWrestlerTextview.setText(oppNames[selectedWeight]);
+        }
+        if(lineup[selectedWeight] == null){
+            IrvineWrestlerTextview.setText("Bye");
+        }
+        else {
+            IrvineWrestlerTextview.setText(lineup[selectedWeight].getName());
+        }
+    }
+
+    public void onStartDualNextClicked(View view) {
+        //Catching Errors/things we can not continue with
+        boolean err = false;
+        if(HomePin.isChecked()){
+            if(HomeTime.getText().toString().equals("")){
+                Utilities.showAlert(this,"Home Wrestler was indicated to have won by pin, please fill out a time of pin");
+                err = true;
+            }
+        }
+        else if(OppPin.isChecked()){
+            if(OppTime.getText().toString().equals("")){
+                Utilities.showAlert(this,"Opponent was indicated to have won by pin, please fill out a time of pin");
+                err = true;
+            }
+        }
+        else if(HomeScore.getText().toString().equals("") || OppScore.getText().toString().equals("")){
+            Utilities.showAlert(this,"Atleast one of scores has not been filled out");
+            err = true;
+        }
+        else if(Integer.parseInt(HomeScore.getText().toString()) ==
+                Integer.parseInt(OppScore.getText().toString())) {
+            Utilities.showAlert(this,"A tie has been detected, please make sure score is correct.");
+            err = true;
+        }
+
+        if(!err) {
+            //Determine Match result
+            Boolean win;
+            String score;
+            if (HomePin.isChecked()) {
+                win = true;
+                score = "WBF " + HomeTime.getText().toString();
+            } else if (OppPin.isChecked()) {
+                win = false;
+                score = "LBF " + OppTime.getText().toString();
+            } else if (Integer.parseInt(HomeScore.getText().toString()) >
+                    Integer.parseInt(OppScore.getText().toString())) {
+                win = true;
+                score = HomeScore.getText().toString() + "-" + OppScore.getText().toString();
+            } else {
+                win = false;
+                score = HomeScore.getText().toString() + "-" + OppScore.getText().toString();
+            }
+            matches[selectedWeight] = new Match(OppWrestlerTextview.getText().toString(),
+                    schoolName,
+                    win,
+                    score);
+
+            //If we already were on the 14th Match, we should be finished with the Dual
+            if (currMatchNumber == 14) {
+                for (int i = 0; i < 14; i++) {
+                    if (lineup[i] != null && !oppNames[i].equals("")) {
+                        lineup[i].getRecord().addMatch(matches[i]);
+                    }
+                }
+                Intent intent = new Intent(this, MainMenuActivity.class);
+                intent.putExtra("Roster", roster);
+                startActivity(intent);
+            }
+
+
+            currMatchNumber++;
+            selectedWeight++;
+
+
+            //Prevents out of bounds for array, will have to cycle back to 106
+            if (selectedWeight > 13) {
+                selectedWeight = 0;
+            }
+            //We are now currently on the 14th match. Button Text will change
+            if (currMatchNumber == 14) {
+                Button next = findViewById(R.id.StartDualNextButton);
+                next.setText("Finish Dual");
+            }
+
+            //Scene Setup
+            if(oppNames[selectedWeight].equals("") || oppNames[selectedWeight].equals("BYE")){
+                OppWrestlerTextview.setText("Bye");
+            }
+            else {
+                OppWrestlerTextview.setText(oppNames[selectedWeight]);
+            }
+            if(lineup[selectedWeight] == null){
+                IrvineWrestlerTextview.setText("Bye");
+            }
+            else {
+                IrvineWrestlerTextview.setText(lineup[selectedWeight].getName());
+            }
+            //Changes Weight Class - lets user know weight class of match
+            WeightClassTextview.setText(weights[selectedWeight]);
+
+            // Reset scores and Textviews
+            HomeScore.setText("");
+            OppScore.setText("");
+            HomeTime.setText("");
+            OppTime.setText("");
+            HomeScore.setVisibility(View.VISIBLE);
+            OppScore.setVisibility(View.VISIBLE);
+            HomeTime.setVisibility(View.GONE);
+            OppTime.setVisibility(View.GONE);
+            HomePin.setChecked(false);
+            OppPin.setChecked(false);
+
+
+        }
+    }
+
+    public void onDualMeetWrestlerPinClicked(View view) {
+        //Check if Opp pin is checked. We will uncheck it and set visibility
+        if(OppPin.isChecked()){
+            OppPin.setChecked(false);
+            OppTime.setVisibility(View.GONE);
+            HomeTime.setVisibility(View.VISIBLE);
+        }
+        else if(HomeTime.getVisibility() == View.VISIBLE){
+            HomeTime.setVisibility(View.GONE);
+            HomeScore.setVisibility(View.VISIBLE);
+            OppScore.setVisibility(View.VISIBLE);
+        }
+        else{
+            HomeScore.setVisibility(View.GONE);
+            OppScore.setVisibility(View.GONE);
+            HomeTime.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public void onDualMeetOppPinClicked(View view) {
+        if(HomePin.isChecked()){
+            HomePin.setChecked(false);
+            HomeTime.setVisibility(View.GONE);
+            OppTime.setVisibility(View.VISIBLE);
+        }
+        else if(OppTime.getVisibility() == View.VISIBLE){
+            OppTime.setVisibility(View.GONE);
+            HomeScore.setVisibility(View.VISIBLE);
+            OppScore.setVisibility(View.VISIBLE);
+        }
+        else{
+            OppTime.setVisibility(View.VISIBLE);
+            HomeScore.setVisibility(View.GONE);
+            OppScore.setVisibility(View.GONE);
+        }
+    }
+}

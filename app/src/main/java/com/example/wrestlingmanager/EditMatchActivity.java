@@ -1,6 +1,10 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +32,7 @@ public class EditMatchActivity extends AppCompatActivity {
     private TextView time;
     private CheckBox win;
     private CheckBox pin;
+    WrestlerDatabase wrestlerDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,21 @@ public class EditMatchActivity extends AppCompatActivity {
         time = findViewById(R.id.EditMatchTimeText);
         win = findViewById(R.id.EditMatchCheckBoxWin);
         pin = findViewById(R.id.EditMatchCheckBoxPin);
+
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
 
         school.setText(match.getSchool());
         opponent.setText(match.getOpponent());
@@ -85,6 +105,9 @@ public class EditMatchActivity extends AppCompatActivity {
             match.setScore(scoreOrTime);
             match.setWin(win.isChecked());
 
+            backgroundThread thread = new backgroundThread(wrestler);
+            thread.start();
+
             Intent intent = new Intent(this,ViewWrestlerActivity.class);
             intent.putExtra("position",pos);
             intent.putExtra("viewWrestler",(Serializable) roster);
@@ -102,6 +125,19 @@ public class EditMatchActivity extends AppCompatActivity {
         else {
             time.setVisibility(TextView.INVISIBLE);
             score.setVisibility(TextView.VISIBLE);
+        }
+    }
+
+    public class backgroundThread extends Thread{
+        private Wrestler wrestler;
+
+        public backgroundThread(Wrestler wrestler){
+            this.wrestler = wrestler;
+        }
+
+        @Override
+        public void run(){
+            wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
         }
     }
 }

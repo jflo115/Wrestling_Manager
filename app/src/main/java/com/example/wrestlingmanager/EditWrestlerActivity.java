@@ -1,6 +1,10 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,11 +21,29 @@ public class EditWrestlerActivity extends AppCompatActivity {
     private Wrestler wrestler;
     private ArrayList<Wrestler> roster;
     private int pos;
+    WrestlerDatabase wrestlerDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_wrestler);
+
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
 
         roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editWrestler");
         pos = getIntent().getIntExtra("position",0);
@@ -92,6 +114,9 @@ public class EditWrestlerActivity extends AppCompatActivity {
                 }
             }
 
+            backgroundThread thread = new backgroundThread(wrestler);
+            thread.start();
+
             //return to prior Activity while sending Wrestler back with new information
             Intent intent = new Intent(this, ViewWrestlerActivity.class);
             intent.putExtra("viewWrestler", roster);
@@ -100,5 +125,17 @@ public class EditWrestlerActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public class backgroundThread extends Thread{
+        private Wrestler wrestler;
+        public backgroundThread(Wrestler wrestler){
+            this.wrestler = wrestler;
+        }
+
+        @Override
+        public void run(){
+            wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+        }
     }
 }

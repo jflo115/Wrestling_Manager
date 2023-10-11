@@ -14,20 +14,20 @@ import java.util.List;
 @Dao
 public interface WrestlerDAO {
     @Insert
-    long insert(Wrestler wrestler);
+    long addWrestler(Wrestler wrestler);
 
     @Insert
-    List<Long> insertAll(List<Wrestler> wrestlerList);
+    List<Long> addAll(List<Wrestler> wrestlerList);
 
     @Query("SELECT * FROM `wrestler_items` WHERE `id`=:id")
-    Wrestler get(long id);
+    Wrestler getWrestler(long id);
 
     @Query("SELECT * FROM `wrestler_items`")
     List<Wrestler> getAll();
 
     @Update
-    int update(Wrestler wrestler);
+    public void updateWrestler(Wrestler wrestler);
 
     @Delete
-    int delete(Wrestler wrestler);
+    public void deleteWrestler(Wrestler wrestler);
 }

@@ -21,11 +21,16 @@ public class Wrestler implements Serializable {
 
 
     @NonNull
+    @ColumnInfo(name = "Accomplishments")
     private ArrayList<String> accomplishments; // Accomplishments from the year, Can be worded any way
+    @ColumnInfo(name = "name")
     private String name; //Name of wrestler
+    @ColumnInfo(name = "grade")
     private int grade; // Grade level of Wrestler, can only be from 9 - 12
     //private int wins, losses; // Number of wins and losses of Wrestler
+    @ColumnInfo(name = "gender")
     private Boolean gender; //True for Boy, False for Girl
+    @ColumnInfo(name = "record")
     private Record record; //Current record of Wrestler;
 
 

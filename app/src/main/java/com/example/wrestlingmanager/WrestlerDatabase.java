@@ -2,21 +2,17 @@ package com.example.wrestlingmanager;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
-import java.util.concurrent.Executors;
 
 @Database(entities = {Wrestler.class}, version = 1)
-@TypeConverters({Converters.class})
+@TypeConverters(WrestlerConverters.class)
 public abstract class WrestlerDatabase extends RoomDatabase {
     private static WrestlerDatabase singleton = null;
 
-    public abstract WrestlerDAO wrestlerDao();
+    public abstract WrestlerDAO getWrestlerDao();
 
     public synchronized static WrestlerDatabase getSingleton(Context context){
         if(singleton == null) {

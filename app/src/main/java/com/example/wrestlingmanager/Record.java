@@ -1,20 +1,28 @@
 package com.example.wrestlingmanager;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity(tableName = "records")
 public class Record implements Serializable {
+
+    @ColumnInfo(name = "record_id")
     @PrimaryKey(autoGenerate = true)
     public long id;
 
     @NonNull
+    //@TypeConverters(Converters.class)
     private ArrayList<Match> matches;
+    @ColumnInfo(name="wins")
     private int wins;
+    @ColumnInfo(name="losses")
     private int losses;
 
     public Record() {

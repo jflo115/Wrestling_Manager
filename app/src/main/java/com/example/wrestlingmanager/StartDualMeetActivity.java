@@ -1,7 +1,11 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +40,7 @@ public class StartDualMeetActivity extends AppCompatActivity {
     private CheckBox HomePin, OppPin;
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> adapterItems;
+    WrestlerDatabase wrestlerDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,21 @@ public class StartDualMeetActivity extends AppCompatActivity {
         lineupIND = (int[]) getIntent().getSerializableExtra("Lineup");
         oppNames = (String[]) getIntent().getSerializableExtra("oppNames");
         schoolName = (String) getIntent().getStringExtra("schoolName");
+
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
 
         //Set up lineup
         lineup = new Wrestler[14];
@@ -177,6 +197,8 @@ public class StartDualMeetActivity extends AppCompatActivity {
                 for (int i = 0; i < 14; i++) {
                     if (lineup[i] != null && !oppNames[i].equals("")) {
                         lineup[i].getRecord().addMatch(matches[i]);
+                        backgroundThread thread = new backgroundThread(lineup[i]);
+                        thread.start();
                     }
                 }
                 Intent intent = new Intent(this, MainMenuActivity.class);
@@ -266,6 +288,19 @@ public class StartDualMeetActivity extends AppCompatActivity {
             OppTime.setVisibility(View.VISIBLE);
             HomeScore.setVisibility(View.GONE);
             OppScore.setVisibility(View.GONE);
+        }
+    }
+
+    public class backgroundThread extends Thread{
+        Wrestler wrestler;
+
+        public backgroundThread(Wrestler wrestler){
+            this.wrestler = wrestler;
+        }
+
+        @Override
+        public void run(){
+            wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
         }
     }
 }

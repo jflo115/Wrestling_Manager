@@ -9,9 +9,9 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-@ProvidedTypeConverter
-public class Converters {
-    @TypeConverter
+public class RecordConverters {
+
+   /* @TypeConverter
     public static ArrayList<String> fromString(String value) {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         return new Gson().fromJson(value,listType);
@@ -22,7 +22,27 @@ public class Converters {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         return json;
+    }*/
+
+    @TypeConverter
+    public ArrayList<Match> StringToMatchList(String str) {
+        Type listType = new TypeToken<ArrayList<Match>>() {}.getType();
+        return new Gson().fromJson(str,listType);
     }
+
+    @TypeConverter
+    public String MatchListToString(ArrayList<Match> matches) {
+        Gson gson = new Gson();
+        String json = gson.toJson(matches);
+        return json;
+    }
+
+
+    /*@TypeConverter
+    public Wrestler StringToWrestler(String str){return null;}
+
+    @TypeConverter
+    public String WrestlerToString(Wrestler wrestler){return null;}
 
     @TypeConverter
     public Record StringToRecord(String str) {
@@ -42,16 +62,9 @@ public class Converters {
     @TypeConverter
     public String MatchToString(Match match) {
         return null;
-    }
+    }*/
 
-    @TypeConverter
-    public ArrayList<Match> StringToMatchList(String str) {
-        return null;
-    }
 
-    @TypeConverter
-    public String MatchListToString(ArrayList<Match> matches) {
-        return null;
-    }
+
 
 }

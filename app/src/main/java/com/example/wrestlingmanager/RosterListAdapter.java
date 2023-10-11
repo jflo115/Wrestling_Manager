@@ -38,6 +38,18 @@ public class RosterListAdapter extends RecyclerView.Adapter<RosterListAdapter.Vi
     }
 
     @Override
+    public long getItemId(int position){
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position)
+    {
+        return position;
+    }
+
+
+    @Override
     public int getItemCount() {
         return roster.size();
     }

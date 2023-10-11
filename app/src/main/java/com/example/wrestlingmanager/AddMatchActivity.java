@@ -1,6 +1,10 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +27,7 @@ public class AddMatchActivity extends AppCompatActivity {
     private CheckBox Pin;
     private ArrayList<Wrestler> roster;
     private int pos;
+    WrestlerDatabase wrestlerDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,23 @@ public class AddMatchActivity extends AppCompatActivity {
         Score = findViewById(R.id.AddMatchScore);
         Win = findViewById(R.id.WinCheckBox);
         Pin = findViewById(R.id.PinCheckBox);
+
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
+
 
         //Possible Refactor?
         if(Pin.isChecked()) {
@@ -84,6 +106,10 @@ public class AddMatchActivity extends AppCompatActivity {
                     School.getText().toString(),
                     Win.isChecked(), scoreOrTime
             ));
+
+            backgroundThread thread = new backgroundThread(wrestler);
+            thread.start();
+
             Intent intent = new Intent(this, ViewWrestlerActivity.class);
             intent.putExtra("viewWrestler", (Serializable) roster);
             intent.putExtra("position", pos);
@@ -98,5 +124,18 @@ public class AddMatchActivity extends AppCompatActivity {
         intent.putExtra("viewWrestler", (Serializable) roster);
         intent.putExtra("position",pos);
         startActivity(intent);
+    }
+
+    public class backgroundThread extends Thread{
+        private Wrestler wrestler;
+
+        public backgroundThread(Wrestler wrestler){
+            this.wrestler = wrestler;
+        }
+
+        @Override
+        public void run(){
+            wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+        }
     }
 }

@@ -13,19 +13,23 @@
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_dual_meet_setup.xml" value="0.33" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_dual_meet_weight_matchup.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_edit_match.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_edit_wrestler.xml" value="0.22" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_edit_wrestler.xml" value="0.33" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_event.xml" value="0.25" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_main_menu.xml" value="0.25" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_roster.xml" value="0.25" />
-        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_start_dual_meet.xml" value="0.33" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_start_dual_meet.xml" value="0.25" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_start_tourney.xml" value="0.22" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_tourney.xml" value="0.33" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_view_details.xml" value="0.33" />
-        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_view_wrestler.xml" value="0.5" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/activity_view_wrestler.xml" value="0.33" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/dual_meet_roster_list.xml" value="0.22" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/match_list.xml" value="0.25" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/roster_list.xml" value="0.271875" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/tourney_roster_list.xml" value="0.25" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/viewdetailslist.xml" value="0.365625" />
         <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/weight_list.xml" value="0.365625" />
+        <entry key="..\:/Users/Justin/AndroidStudioProjects/WrestlingManager/app/src/main/res/layout/wrestlers_at_tourney_view_row.xml" value="0.33" />
       </map>
     </option>
   </component>

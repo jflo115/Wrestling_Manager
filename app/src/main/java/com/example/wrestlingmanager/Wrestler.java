@@ -44,10 +44,12 @@ public class Wrestler implements Serializable {
         this.gender = gender;
     }
 
+    // Gets Name
     public String getName() {
         return name;
     }
 
+    // Sets Name
     public void setName(String name) {
         this.name = name;
     }
@@ -66,6 +68,7 @@ public class Wrestler implements Serializable {
     public ArrayList<String> getAccomplishments() {
         return accomplishments;
     }
+
 
     public void setAccomplishments(ArrayList<String> accomplishments){
         this.accomplishments.clear();

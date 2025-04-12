@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ public class StartDualMeetActivity extends AppCompatActivity {
 
     private ConstraintLayout scene1;
     private ConstraintLayout scene2;
+    private ConstraintLayout scene3;
     private String[] weights = {"106","113","120","126","132","138","144","150","157","165","175","190","215","285"};
     private ArrayList<Wrestler> roster;
     private ArrayList<Integer> selectedIND;
@@ -36,11 +38,15 @@ public class StartDualMeetActivity extends AppCompatActivity {
     private int selectedWeight = -1;
     private int currMatchNumber = 0;
     private TextView schoolNameTextview,IrvineWrestlerTextview,OppWrestlerTextview, WeightClassTextview;
-    private TextView HomeScore, OppScore, HomeTime, OppTime;
+    private TextView HomeScore, OppScore, HomeTime, OppTime,HomeTeamScore,OppTeamScore;
     private CheckBox HomePin, OppPin;
+    private TextView DualMeetResultsText;
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> adapterItems;
+    private int HomeTeamScoreNum = 0;
+    private int OppTeamScoreNum = 0;
     WrestlerDatabase wrestlerDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +89,12 @@ public class StartDualMeetActivity extends AppCompatActivity {
         //Set up Constraint Layouts
         scene1 = findViewById(R.id.DualMeetFirstLayout);
         scene2 = findViewById(R.id.DualMeetInitiatedLayout);
+        scene3 = findViewById(R.id.DualMeetFinalLayout);
 
         //Set up Visibilities of Scenes
         scene1.setVisibility(View.VISIBLE);
         scene2.setVisibility(View.GONE);
+        scene3.setVisibility(View.GONE);
 
         // Set up Title textview
         TextView title = findViewById(R.id.DualMeetTitle);
@@ -105,6 +113,11 @@ public class StartDualMeetActivity extends AppCompatActivity {
         OppTime = findViewById(R.id.DualMeetOppTime);
         HomePin = findViewById(R.id.DualMeetWrestlerPinBox);
         OppPin = findViewById(R.id.DualMeetOppPinBox);
+
+        //Set up TeamScore Textviews
+        HomeTeamScore = findViewById(R.id.DualMeetHomeTeamScore);
+        OppTeamScore = findViewById(R.id.DualMeetOppTeamScore);
+
 
         //Set up DropDown Box
         autoCompleteTextView = findViewById(R.id.auto_complete_txt);
@@ -176,16 +189,47 @@ public class StartDualMeetActivity extends AppCompatActivity {
             if (HomePin.isChecked()) {
                 win = true;
                 score = "WBF " + HomeTime.getText().toString();
+                HomeTeamScoreNum += 6;
+                HomeTeamScore.setText(Integer.toString(HomeTeamScoreNum));
             } else if (OppPin.isChecked()) {
                 win = false;
                 score = "LBF " + OppTime.getText().toString();
+                OppTeamScoreNum += 6;
+                OppTeamScore.setText(Integer.toString(OppTeamScoreNum));
             } else if (Integer.parseInt(HomeScore.getText().toString()) >
                     Integer.parseInt(OppScore.getText().toString())) {
                 win = true;
                 score = HomeScore.getText().toString() + "-" + OppScore.getText().toString();
+                int matchScoreDiff = Integer.parseInt(HomeScore.getText().toString()) - Integer.parseInt(OppScore.getText().toString());
+                if(matchScoreDiff >= 15){
+                    HomeTeamScoreNum += 5;
+                    HomeTeamScore.setText(Integer.toString(HomeTeamScoreNum));
+                }
+                else if(matchScoreDiff >= 8){
+                    HomeTeamScoreNum += 4;
+                    HomeTeamScore.setText(Integer.toString(HomeTeamScoreNum));
+                }
+                else{
+                    HomeTeamScoreNum += 3;
+                    HomeTeamScore.setText(Integer.toString(HomeTeamScoreNum));
+                }
+
             } else {
                 win = false;
                 score = HomeScore.getText().toString() + "-" + OppScore.getText().toString();
+                int matchScoreDiff = Integer.parseInt(OppScore.getText().toString()) - Integer.parseInt(HomeScore.getText().toString());
+                if(matchScoreDiff >= 15){
+                    OppTeamScoreNum += 5;
+                    OppTeamScore.setText(Integer.toString(OppTeamScoreNum));
+                }
+                else if(matchScoreDiff >= 8){
+                    OppTeamScoreNum += 4;
+                    OppTeamScore.setText(Integer.toString(OppTeamScoreNum));
+                }
+                else{
+                    OppTeamScoreNum += 3;
+                    OppTeamScore.setText(Integer.toString(OppTeamScoreNum));
+                }
             }
             matches[selectedWeight] = new Match(OppWrestlerTextview.getText().toString(),
                     schoolName,
@@ -201,9 +245,28 @@ public class StartDualMeetActivity extends AppCompatActivity {
                         thread.start();
                     }
                 }
+                scene2.setVisibility(View.GONE);
+                scene3.setVisibility(View.VISIBLE);
+
+                DualMeetResultsText = findViewById(R.id.DualMeetResultsText);
+                if(HomeTeamScoreNum > OppTeamScoreNum){
+                    DualMeetResultsText.setText("Irvine Wins \n" + HomeTeamScoreNum
+                            + "-" + OppTeamScoreNum + "\n\n CONGRATS!");
+                    DualMeetResultsText.setTextColor(Color.GREEN);
+                }
+                else if(OppTeamScoreNum > HomeTeamScoreNum){
+                    DualMeetResultsText.setText(schoolName + " Wins \n"
+                    + OppTeamScoreNum + "-" + HomeTeamScoreNum + "\n\n MAYBE NEXT TIME");
+                    DualMeetResultsText.setTextColor(Color.RED);
+                }
+                else{
+                    DualMeetResultsText.setText("There Was A Tie \n" + HomeTeamScoreNum
+                            + "-" + OppTeamScoreNum);
+                }
+                /*
                 Intent intent = new Intent(this, MainMenuActivity.class);
                 intent.putExtra("Roster", roster);
-                startActivity(intent);
+                startActivity(intent); */
             }
 
 
@@ -289,6 +352,12 @@ public class StartDualMeetActivity extends AppCompatActivity {
             HomeScore.setVisibility(View.GONE);
             OppScore.setVisibility(View.GONE);
         }
+    }
+
+    public void onDualMeetContinue2Clicked(View view) {
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        intent.putExtra("Roster", roster);
+        startActivity(intent);
     }
 
     public class backgroundThread extends Thread{

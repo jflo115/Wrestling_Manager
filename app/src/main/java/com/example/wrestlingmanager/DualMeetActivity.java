@@ -112,7 +112,7 @@ public class DualMeetActivity extends AppCompatActivity {
 
 
     public void onDualMeetContinueClicked(View view) {
-        //Makes sure we cant continue without selectin atleast one Wrestler.
+        //Makes sure we cant continue without selecting at least one Wrestler.
         if(selected.isEmpty() || selectedIND.isEmpty()){
             Utilities.showAlert(this,"No wrestlers have been selected");
         }

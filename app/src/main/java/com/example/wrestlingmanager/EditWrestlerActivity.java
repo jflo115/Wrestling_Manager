@@ -7,6 +7,9 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -127,6 +130,38 @@ public class EditWrestlerActivity extends AppCompatActivity {
 
     }
 
+    public void onDeleteWrestlerClicked(View view) {
+        showDeleteAlert(this);
+    }
+
+    public void showDeleteAlert(Activity activity) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(activity);
+        String message = "You have selected to delete this wrestler from the roster. Continuing will erase data and cannot be undone. Are you sure you want to continue?";
+        alertBuilder
+                .setTitle("Warning")
+                .setMessage(message)
+                .setNegativeButton("Cancel", (dialog,id) -> {
+                    dialog.cancel();
+                })
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteBackgroundTread thread = new deleteBackgroundTread(wrestler);
+                        thread.start();
+                        roster.remove(pos);
+                        Intent intent = new Intent(EditWrestlerActivity.this,ViewDetailsActivity.class);
+                        intent.putExtra("viewRoster", roster);
+                        intent.putExtra("position", pos);
+                        startActivity(intent);
+                    }
+                })
+
+                .setCancelable(true);
+
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+    }
+
     public class backgroundThread extends Thread{
         private Wrestler wrestler;
         public backgroundThread(Wrestler wrestler){
@@ -136,6 +171,18 @@ public class EditWrestlerActivity extends AppCompatActivity {
         @Override
         public void run(){
             wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+        }
+    }
+
+    public class deleteBackgroundTread extends Thread{
+        private Wrestler wrestler;
+        public deleteBackgroundTread(Wrestler wrestler){
+            this.wrestler = wrestler;
+        }
+
+        @Override
+        public void run(){
+            wrestlerDB.getWrestlerDao().deleteWrestlerByID(wrestler.id);
         }
     }
 }

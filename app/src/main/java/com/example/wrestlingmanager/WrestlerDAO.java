@@ -25,6 +25,9 @@ public interface WrestlerDAO {
     @Query("SELECT * FROM `wrestler_items`")
     List<Wrestler> getAll();
 
+    @Query("DELETE FROM `wrestler_items` WHERE `id`=:id")
+    void deleteWrestlerByID(long id);
+
     @Update
     public void updateWrestler(Wrestler wrestler);
 

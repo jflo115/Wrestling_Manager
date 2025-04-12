@@ -32,6 +32,8 @@ public class EditMatchActivity extends AppCompatActivity {
     private TextView time;
     private CheckBox win;
     private CheckBox pin;
+    private int source;
+    private ArrayList<Integer> selectedIND;
     WrestlerDatabase wrestlerDB;
 
     @Override
@@ -41,6 +43,8 @@ public class EditMatchActivity extends AppCompatActivity {
         roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editMatch");
         pos = getIntent().getIntExtra("position",0);
         MatchPos = getIntent().getIntExtra("MatchPosition",0);
+        source = getIntent().getIntExtra("source",source);
+        selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
         wrestler = roster.get(pos);
         match = wrestler.getRecord().getMatches().get(MatchPos);
 
@@ -89,6 +93,8 @@ public class EditMatchActivity extends AppCompatActivity {
         Intent intent = new Intent(this,ViewWrestlerActivity.class);
         intent.putExtra("position",pos);
         intent.putExtra("viewWrestler",(Serializable) roster);
+        intent.putExtra("source",source);
+        intent.putExtra("Selected",(Serializable) selectedIND);
         startActivity(intent);
     }
 
@@ -111,6 +117,8 @@ public class EditMatchActivity extends AppCompatActivity {
             Intent intent = new Intent(this,ViewWrestlerActivity.class);
             intent.putExtra("position",pos);
             intent.putExtra("viewWrestler",(Serializable) roster);
+            intent.putExtra("source",source);
+            intent.putExtra("Selected",(Serializable) selectedIND);
             startActivity(intent);
 
         }

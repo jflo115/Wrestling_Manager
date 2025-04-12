@@ -27,7 +27,10 @@ public class EventActivity extends AppCompatActivity {
     }
 
     public void onTournamentButtonClicked(View view) {
-        Utilities.showAlert(this,"Not available yet");
+        //Utilities.showAlert(this,"Not available yet");
+        Intent intent = new Intent(this, TourneyActivity.class);
+        intent.putExtra("Roster", roster);
+        startActivity(intent);
     }
 
     public void onEventBackButtonClicked(View view) {

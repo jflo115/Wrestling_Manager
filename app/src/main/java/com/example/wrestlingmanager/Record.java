@@ -65,4 +65,8 @@ public class Record implements Serializable {
     public int getLosses() {
         return this.losses;
     }
+
+    public String toString(){
+        return wins + " - " + losses;
+    }
 }

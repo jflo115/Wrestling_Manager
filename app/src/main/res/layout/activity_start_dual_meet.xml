@@ -81,11 +81,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/DualMeetInitiatedLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:visibility="gone">
 
         <TextView
             android:id="@+id/startDualMeetWrestlerNameText"
-            android:layout_width="200dp"
+            android:layout_width="196dp"
             android:layout_height="75dp"
             android:gravity="center"
             android:text="Wrestler"
@@ -93,14 +96,29 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.352" />
+            app:layout_constraintVertical_bias="0.384" />
+
+        <TextView
+            android:id="@+id/DualMeetHomeTeamScore"
+            android:layout_width="196dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#005003"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.005"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.285" />
 
         <TextView
             android:id="@+id/StartDualMeetIrvineText"
-            android:layout_width="205dp"
+            android:layout_width="196dp"
             android:layout_height="75dp"
             android:gravity="center"
             android:text="Irvine"
@@ -111,11 +129,11 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.237" />
+            app:layout_constraintVertical_bias="0.185" />
 
         <TextView
             android:id="@+id/StartDualMeetOppSchoolText"
-            android:layout_width="205dp"
+            android:layout_width="196dp"
             android:layout_height="75dp"
             android:gravity="center"
             android:text="Opponent"
@@ -123,10 +141,10 @@
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.995"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.236" />
+            app:layout_constraintVertical_bias="0.185" />
 
         <EditText
             android:id="@+id/DualMeetWrestlerScore"
@@ -141,10 +159,10 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.179"
+            app:layout_constraintHorizontal_bias="0.154"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.466" />
+            app:layout_constraintVertical_bias="0.482" />
 
         <EditText
             android:id="@+id/DualMeetWrestlerTime"
@@ -172,16 +190,16 @@
             android:buttonTint="#005003"
             android:checked="false"
             android:gravity="center"
+            android:onClick="onDualMeetWrestlerPinClicked"
             android:text="Pin"
             android:textAlignment="viewStart"
             android:textSize="20sp"
-            android:onClick="onDualMeetWrestlerPinClicked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.263"
+            app:layout_constraintHorizontal_bias="0.238"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.557" />
+            app:layout_constraintVertical_bias="0.562" />
 
         <CheckBox
             android:id="@+id/DualMeetOppPinBox"
@@ -190,20 +208,20 @@
             android:buttonTint="#F30000"
             android:checked="false"
             android:gravity="center"
+            android:onClick="onDualMeetOppPinClicked"
             android:text="Pin"
             android:textAlignment="viewStart"
             android:textSize="20sp"
-            android:onClick="onDualMeetOppPinClicked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.73"
+            app:layout_constraintHorizontal_bias="0.755"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.557" />
+            app:layout_constraintVertical_bias="0.562" />
 
         <TextView
             android:id="@+id/startDualMeetOppText"
-            android:layout_width="200dp"
+            android:layout_width="196dp"
             android:layout_height="75dp"
             android:gravity="center"
             android:text="Wrestler"
@@ -211,10 +229,25 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.971"
+            app:layout_constraintHorizontal_bias="0.994"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.352" />
+            app:layout_constraintVertical_bias="0.384" />
+
+        <TextView
+            android:id="@+id/DualMeetOppTeamScore"
+            android:layout_width="196dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#F30000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.285" />
 
         <EditText
             android:id="@+id/DualMeetOppScore"
@@ -229,10 +262,10 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.816"
+            app:layout_constraintHorizontal_bias="0.841"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.466" />
+            app:layout_constraintVertical_bias="0.482" />
 
         <EditText
             android:id="@+id/DualMeetOppTime"
@@ -261,10 +294,10 @@
             android:text="Next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.809" />
+            app:layout_constraintVertical_bias="0.789" />
 
         <TextView
             android:id="@+id/DualMeetWeightClass"
@@ -279,9 +312,64 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.143" />
+            app:layout_constraintVertical_bias="0.118" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/DualMeetFinalLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp">
+
+
+        <Button
+            android:id="@+id/DualMeetContinueButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            android:onClick="onDualMeetContinue2Clicked"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.806" />
+
+        <TextView
+            android:id="@+id/DualMeetResultsTitle"
+            android:layout_width="277dp"
+            android:layout_height="41dp"
+            android:fontFamily="sans-serif"
+            android:text="Final Dual Score:"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.137" />
+
+        <TextView
+            android:id="@+id/DualMeetResultsText"
+            android:layout_width="291dp"
+            android:layout_height="255dp"
+            android:fontFamily="sans-serif"
+            android:text="Placeholder win \n score \n \n congrats"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.405" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

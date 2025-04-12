@@ -238,4 +238,24 @@ public class DualMeetSetupActivity extends AppCompatActivity {
         intent.putExtra("Roster",roster);
         startActivity(intent);
     }
+
+    public void onDualMeetSetupDevFillClicked(View view) {
+        oppTextViews[0].setText("Test 106");
+        oppTextViews[1].setText("Test 113");
+        oppTextViews[2].setText("Test 120");
+        oppTextViews[3].setText("Test 126");
+        oppTextViews[4].setText("Test 132");
+        oppTextViews[5].setText("Test 138");
+        oppTextViews[6].setText("Test 144");
+        oppTextViews[7].setText("Test 150");
+        oppTextViews[8].setText("Test 157");
+        oppTextViews[9].setText("Test 165");
+        oppTextViews[10].setText("Test 175");
+        oppTextViews[11].setText("Test 190");
+        oppTextViews[12].setText("Test 215");
+        oppTextViews[13].setText("Test 285");
+
+        oppSchoolTextview.setText("Test School");
+
+    }
 }

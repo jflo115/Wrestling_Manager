@@ -35,6 +35,7 @@ public class WrestlerConverters {
             Log.d("oops","error");
             return null;
         }
+        //Converts string into necessary components of a Wrestler
         while(!str.equals("")){
             ind = str.indexOf(",");
             name = str.substring(0,ind);

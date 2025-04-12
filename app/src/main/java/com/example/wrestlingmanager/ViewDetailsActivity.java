@@ -74,6 +74,7 @@ public class ViewDetailsActivity extends AppCompatActivity {
                 intent.putExtra("viewWrestler", (Serializable) roster);
 
                 intent.putExtra("position",realPos);
+                intent.putExtra("source",1);
                 //intent.putExtra("viewWrestler", (Serializable) list.getItemAtPosition(pos));
                 startActivity(intent);
             }

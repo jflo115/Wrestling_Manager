@@ -14,7 +14,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+
     public void onEnterClicked(View view) {
+        //First Page kind of redundant for now.
         Intent intent = new Intent(this,MainMenuActivity.class);
         startActivity(intent);
     }

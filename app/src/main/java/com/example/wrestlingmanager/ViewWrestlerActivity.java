@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,7 +18,9 @@ public class ViewWrestlerActivity extends AppCompatActivity {
     private ArrayList<Wrestler> roster = new ArrayList<Wrestler>();
     private ListView listView;
     private MatchListAdapter adapter;
+    private ArrayList<Integer> selectedIND;
     private int pos;
+    private int source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,15 @@ public class ViewWrestlerActivity extends AppCompatActivity {
 
         pos = getIntent().getIntExtra("position",0);
         roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("viewWrestler");
+        source = getIntent().getIntExtra("source",source); // Tells us where we are accessing Activity from
+        selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
+        // Sources : 1 == viewRoster, 2 == StartTourney
+        if(source == 2){
+            Button addMatch = findViewById(R.id.AddMatchButton);
+            Button editWrestler = findViewById(R.id.EditWrestlerButton);
+            addMatch.setVisibility(View.GONE);
+            editWrestler.setVisibility(View.GONE);
+        }
         wrestler = roster.get(pos);
 
         //Set up Textviews
@@ -65,6 +77,8 @@ public class ViewWrestlerActivity extends AppCompatActivity {
                 Intent intent = new Intent(ViewWrestlerActivity.this,EditMatchActivity.class);
                 intent.putExtra("editMatch",(Serializable) roster);
                 intent.putExtra("position",pos);
+                intent.putExtra("source",source);
+                intent.putExtra("Selected",(Serializable) selectedIND);
                 intent.putExtra("MatchPosition", Matchpos);
                 startActivity(intent);
             }
@@ -84,12 +98,25 @@ public class ViewWrestlerActivity extends AppCompatActivity {
         Intent intent = new Intent(this,AddMatchActivity.class);
         intent.putExtra("AddMatch", (Serializable) roster);
         intent.putExtra("position",pos);
+        intent.putExtra("source",1);
         startActivity(intent);
     }
 
     public void onViewWrestlerBackClicked(View view) {
-        Intent intent = new Intent(this, ViewDetailsActivity.class);
-        intent.putExtra("viewRoster", (Serializable) roster);
-        startActivity(intent);
+        if(source == 1) {
+            Intent intent = new Intent(this, ViewDetailsActivity.class);
+            intent.putExtra("viewRoster", (Serializable) roster);
+            startActivity(intent);
+        }
+        else if(source == 2){
+            Intent intent = new Intent(this,StartTourneyActivity.class);
+            intent.putExtra("Roster",(Serializable) roster);
+            intent.putExtra("Selected",(Serializable) selectedIND);
+            startActivity(intent);
+        }
+        else{
+            Utilities.showAlert(this,"Unexpected Error");
+        }
+
     }
 }

@@ -35,7 +35,7 @@ public class AddMatchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_match);
         //Roster setup from prior intent
-        roster = (ArrayList<Wrestler>)getIntent().getSerializableExtra("AddMatch");
+        //roster = (ArrayList<Wrestler>)getIntent().getSerializableExtra("AddMatch");
         pos = getIntent().getIntExtra("position",pos); //Position of current wrestler taken from prior intent
         source = getIntent().getIntExtra("source",source); // Source/Activity we have traversed from
         // source = 1 == ViewWrestler, 2 == StartTourney
@@ -66,7 +66,9 @@ public class AddMatchActivity extends AppCompatActivity {
         //Set up wrestler Database
         wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
 
-
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
 
         // Checks if pin checkbox is checked, if so we have to hide Score textview and show Time textview
         // If it is not checked, if so we have to hide Time textview and show Score textview
@@ -175,7 +177,7 @@ public class AddMatchActivity extends AppCompatActivity {
     /*
      * Background thread that will update our current wrestler in the database
      */
-    public class backgroundThread extends Thread{
+    private class backgroundThread extends Thread{
         private Wrestler wrestler;
 
         public backgroundThread(Wrestler wrestler){
@@ -185,6 +187,17 @@ public class AddMatchActivity extends AppCompatActivity {
         @Override
         public void run(){
             wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+        }
+    }
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
         }
     }
 }

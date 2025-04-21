@@ -1,10 +1,15 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -21,13 +26,38 @@ public class TourneyActivity extends AppCompatActivity {
     private ListView list, selectedList;
     private TourneyRosterAdapter adapter, adapterSelected;
     private TabLayout BGTab;
-
+    private WrestlerDatabase wrestlerDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourney);
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
+
+        // Callback set for Database, needed for database to work as intended
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
+        //Waits til roster is taken before proceeding
+        while(roster == null) {
+            Log.d("Lol","Waiting");
+        }
+
+        //roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
         filtered = RosterFilter.filterBoys(roster);
 
         list = (ListView) findViewById(R.id.TourneyRosterList);
@@ -107,9 +137,21 @@ public class TourneyActivity extends AppCompatActivity {
 
     public void onTourneyContinueButton(View view) {
         Intent intent = new Intent(this, StartTourneyActivity.class);
-        intent.putExtra("Roster", roster);
         intent.putExtra("Selected", selectedIND);
         intent.putExtra("Boys", BGTab.getSelectedTabPosition() == 0);
         startActivity(intent);
     }
+
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
+        }
+    }
+
 }

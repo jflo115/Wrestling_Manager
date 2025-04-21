@@ -1,6 +1,10 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,7 +40,7 @@ public class DualMeetSetupActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private TextView oppSchoolTextview;
     private Boolean Boys;
-
+    private WrestlerDatabase wrestlerDB;
 
 
     @Override
@@ -44,7 +48,27 @@ public class DualMeetSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dual_meet_setup);
         //Extract Serializable Extras
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
+
+        // Callback set for Database, needed for database to work as intended
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
+
         selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
         Boys = getIntent().getBooleanExtra("Boys", true);
         selected = new ArrayList<Wrestler>();
@@ -235,7 +259,6 @@ public class DualMeetSetupActivity extends AppCompatActivity {
 
     public void onDualMeetWeightBoysBackButtonClicked(View view) {
         Intent intent = new Intent(this,DualMeetActivity.class);
-        intent.putExtra("Roster",roster);
         startActivity(intent);
     }
 
@@ -257,5 +280,17 @@ public class DualMeetSetupActivity extends AppCompatActivity {
 
         oppSchoolTextview.setText("Test School");
 
+    }
+
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
+        }
     }
 }

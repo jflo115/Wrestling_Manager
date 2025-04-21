@@ -73,19 +73,16 @@ public class RosterActivity extends AppCompatActivity {
         //List<Wrestler> wrestlers2 = wrestlerDAO.getAll();
 
         // Creates a background thread which sets up the roster
-        rosterThread rosterthread = new rosterThread();
+        RosterThread rosterthread = new RosterThread();
         rosterthread.start();
 
         /* This while loops stalls the program until the roster is set up
          * Prob not the best way to do this but many times program would go too fast and
          * our list would be empty despite having a full roster.
          */
-        while(roster == null) {
-            Log.d("Lol","Waiting");
-        }
 
         //Set Adapter to test Data
-        adapter.setRosterData(roster);
+        //adapter.setRosterData(roster); moved to background thread
 
 
         // TabLayout Setup
@@ -149,19 +146,21 @@ public class RosterActivity extends AppCompatActivity {
      */
     public void onRosterBackClicked(View view) {
         Intent intent = new Intent(this,MainMenuActivity.class);
-        intent.putExtra("Roster",roster);
+        //intent.putExtra("Roster",roster);
         startActivity(intent);
     }
 
     /*
      * Background thread that sets up Roster from accessing data from the database
      */
-    public class rosterThread extends Thread{
-        public rosterThread(){}
+    private class RosterThread extends Thread{
+        public RosterThread(){}
 
         @Override
         public void run(){
             roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
+            //Set Adapter to test Data
+            adapter.setRosterData(roster);
         }
     }
 }

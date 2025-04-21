@@ -50,7 +50,7 @@ public class MainMenuActivity extends AppCompatActivity {
      */
     public void onRosterClicked(View view) {
         Intent intent = new Intent(this,RosterActivity.class);
-        intent.putExtra("Roster",roster);
+        //intent.putExtra("Roster",roster); Might not be needed.
         startActivity(intent);
     }
 
@@ -80,7 +80,7 @@ public class MainMenuActivity extends AppCompatActivity {
     class backgroundThread extends Thread{
         @Override
         public void run(){
-            roster = (ArrayList) wrestlerDB.getWrestlerDao().getAll();
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
         }
     }
 }

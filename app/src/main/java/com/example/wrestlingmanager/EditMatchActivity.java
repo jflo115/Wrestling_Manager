@@ -40,7 +40,9 @@ public class EditMatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_match);
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editMatch");
+
+
+        //roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editMatch");
         pos = getIntent().getIntExtra("position",0);
         MatchPos = getIntent().getIntExtra("MatchPosition",0);
         source = getIntent().getIntExtra("source",source);
@@ -70,6 +72,10 @@ public class EditMatchActivity extends AppCompatActivity {
 
         //Set up wrestler Database
         wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
 
         school.setText(match.getSchool());
         opponent.setText(match.getOpponent());
@@ -136,7 +142,7 @@ public class EditMatchActivity extends AppCompatActivity {
         }
     }
 
-    public class backgroundThread extends Thread{
+    private class backgroundThread extends Thread{
         private Wrestler wrestler;
 
         public backgroundThread(Wrestler wrestler){
@@ -144,8 +150,18 @@ public class EditMatchActivity extends AppCompatActivity {
         }
 
         @Override
+        public void run(){ wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+        }
+    }
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
         public void run(){
-            wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
         }
     }
 }

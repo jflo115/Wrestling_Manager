@@ -4,43 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:outlineProvider="none"
     tools:context=".EventActivity">
 
-    <Button
+    <ImageButton
         android:id="@+id/DualMeetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onDualMeetButtonClicked"
-        android:text="Dual Meet"
+        android:layout_width="407dp"
+        android:layout_height="343dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="dual"
+        android:scaleType="centerCrop"
+        android:src="@drawable/dual"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
+        app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <ImageButton
         android:id="@+id/TournamentButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onTournamentButtonClicked"
+        android:layout_width="420dp"
+        android:layout_height="292dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tournament"
         android:text="Tournament"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.449" />
+        app:layout_constraintTop_toBottomOf="@+id/DualMeetButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/EventBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="401sp"
+        android:layout_height="64sp"
         android:onClick="onEventBackButtonClicked"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TournamentButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textEventDualMeet"
+        android:layout_width="210sp"
+        android:layout_height="42sp"
+        android:fontFamily="@font/bakbak_one"
+        android:text="Dual Meet"
+
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:shadowColor="#000000"
+        android:shadowDx="11.5"
+        android:shadowDy="11.3"
+        android:shadowRadius="1.6"
+        android:textColor="@color/green_dark"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/DualMeetButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.166" />
+
+    <TextView
+        android:id="@+id/textEventTournament"
+        android:layout_width="256dp"
+        android:layout_height="39dp"
+        android:fontFamily="@font/bakbak_one"
+        android:shadowColor="#000000"
+        android:shadowDx="11.5"
+        android:shadowDy="11.3"
+        android:shadowRadius="1.6"
+        android:text="Tournament"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/green_dark"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/TournamentButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.896"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

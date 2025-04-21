@@ -24,7 +24,7 @@ public class AddWrestlerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_wrestler);
         // Roster set up by extracting data sent over with Intent
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
+        //roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
 
         // Needed for Database to work
         RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
@@ -41,6 +41,10 @@ public class AddWrestlerActivity extends AppCompatActivity {
         // Database setup
         wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
 
+        //Creates background thread which sets up Roster
+        RosterThread rosterThread = new RosterThread();
+        rosterThread.start();
+
     }
 
     /*
@@ -49,7 +53,7 @@ public class AddWrestlerActivity extends AppCompatActivity {
      */
     public void onAddWrestler2Clicked(View view) {
         Intent intent = new Intent(this,RosterActivity.class);
-        intent.putExtra("Roster",roster);
+        //intent.putExtra("Roster",roster); Not needed
         startActivity(intent);
     }
 
@@ -65,26 +69,25 @@ public class AddWrestlerActivity extends AppCompatActivity {
         // App cant continue if some boxes were not filled, will notify user and wont create a wrestler
         if(name.getText().toString().equals("") || grade.getText().toString().equals("")) {
             Utilities.showAlert(this,"Fil out all boxes or press back");
-            //TODO fix the other classes like above
         }
         else {
             String gradeString = grade.getText().toString();
             int gradeInt = Integer.parseInt(gradeString);
             Wrestler newWrestler = new Wrestler(name.getText().toString(), gradeInt, !sexSwitch.isChecked());
 
-            roster.add(newWrestler);
+            roster.add(new Wrestler(name.getText().toString(), gradeInt, !sexSwitch.isChecked()));
             //Thread started in background to add wrestler to Database
             backgroundThread thread = new backgroundThread(newWrestler);
             thread.start();
 
             //return to prior Activity while sending Roster back with new Wrestler
             Intent intent = new Intent(this, RosterActivity.class);
-            intent.putExtra("Roster", roster);
+            //intent.putExtra("Roster", roster); Not needed
             startActivity(intent);
         }
     }
 
-    class backgroundThread extends Thread{
+    private class backgroundThread extends Thread{
         Wrestler wrestler;
         public backgroundThread(Wrestler wrestler){
             this.wrestler = wrestler;
@@ -92,6 +95,15 @@ public class AddWrestlerActivity extends AppCompatActivity {
         @Override
         public void run(){
             wrestlerDB.getWrestlerDao().addWrestler(wrestler);
+        }
+    }
+
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
         }
     }
 }

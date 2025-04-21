@@ -1,7 +1,11 @@
 package com.example.wrestlingmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,14 +26,33 @@ public class StartTourneyActivity extends AppCompatActivity {
     private ArrayList<Wrestler> selected;
     private ListView WrestlerList;
     private TourneyStartAdapter adapter;
-
+    private WrestlerDatabase wrestlerDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_tourney);
 
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
+        // Callback set for Database, needed for database to work as intended
+        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+            }
+
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                super.onOpen(db);
+            }
+        };
+
+        //Set up wrestler Database
+        wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
+
         selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
         boys = getIntent().getBooleanExtra("Boys",true);
         selected = new ArrayList<Wrestler>();
@@ -74,5 +97,17 @@ public class StartTourneyActivity extends AppCompatActivity {
         Intent intent = new Intent(this,MainMenuActivity.class);
         intent.putExtra("Roster", (Serializable) roster);
         startActivity(intent);
+    }
+
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
+        }
     }
 }

@@ -45,7 +45,7 @@ public class StartDualMeetActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapterItems;
     private int HomeTeamScoreNum = 0;
     private int OppTeamScoreNum = 0;
-    WrestlerDatabase wrestlerDB;
+    private WrestlerDatabase wrestlerDB;
 
 
     @Override
@@ -53,13 +53,7 @@ public class StartDualMeetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_dual_meet);
 
-        //Get Extras from intent
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
-        selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
-        lineupIND = (int[]) getIntent().getSerializableExtra("Lineup");
-        oppNames = (String[]) getIntent().getSerializableExtra("oppNames");
-        schoolName = (String) getIntent().getStringExtra("schoolName");
-
+        // Callback set for Database, needed for database to work as intended
         RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -74,6 +68,19 @@ public class StartDualMeetActivity extends AppCompatActivity {
 
         //Set up wrestler Database
         wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
+
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
+
+
+        //Get Extras from intent
+        //roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("Roster");
+        selectedIND = (ArrayList<Integer>) getIntent().getSerializableExtra("Selected");
+        lineupIND = (int[]) getIntent().getSerializableExtra("Lineup");
+        oppNames = (String[]) getIntent().getSerializableExtra("oppNames");
+        schoolName = (String) getIntent().getStringExtra("schoolName");
+
 
         //Set up lineup
         lineup = new Wrestler[14];
@@ -356,11 +363,10 @@ public class StartDualMeetActivity extends AppCompatActivity {
 
     public void onDualMeetContinue2Clicked(View view) {
         Intent intent = new Intent(this, MainMenuActivity.class);
-        intent.putExtra("Roster", roster);
         startActivity(intent);
     }
 
-    public class backgroundThread extends Thread{
+    private class backgroundThread extends Thread{
         Wrestler wrestler;
 
         public backgroundThread(Wrestler wrestler){
@@ -370,6 +376,18 @@ public class StartDualMeetActivity extends AppCompatActivity {
         @Override
         public void run(){
             wrestlerDB.getWrestlerDao().updateWrestler(wrestler);
+        }
+    }
+
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
         }
     }
 }

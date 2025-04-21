@@ -47,8 +47,12 @@ public class EditWrestlerActivity extends AppCompatActivity {
         //Set up wrestler Database
         wrestlerDB = Room.databaseBuilder(getApplicationContext(),WrestlerDatabase.class,"wrestlerDB").addCallback(myCallBack).build();
 
+        // Creates a background thread which sets up the roster
+        RosterThread rosterthread = new RosterThread();
+        rosterthread.start();
 
-        roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editWrestler");
+
+        //roster = (ArrayList<Wrestler>) getIntent().getSerializableExtra("editWrestler");
         pos = getIntent().getIntExtra("position",0);
         wrestler = roster.get(pos);
 
@@ -99,7 +103,7 @@ public class EditWrestlerActivity extends AppCompatActivity {
             wrestler.setName(WrestlerName.getText().toString());
             wrestler.setGrade(Integer.parseInt(WrestlerGrade.getText().toString()));
 
-            //TODO- REFACTOR
+            //TODO- REFACTOR //wrestler.setGender(!genderSwitch.isChecked());
             if (!genderSwitch.isChecked()) {
                 wrestler.setGender(true);
             } else {
@@ -162,7 +166,7 @@ public class EditWrestlerActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public class backgroundThread extends Thread{
+    private class backgroundThread extends Thread{
         private Wrestler wrestler;
         public backgroundThread(Wrestler wrestler){
             this.wrestler = wrestler;
@@ -174,7 +178,7 @@ public class EditWrestlerActivity extends AppCompatActivity {
         }
     }
 
-    public class deleteBackgroundTread extends Thread{
+    private class deleteBackgroundTread extends Thread{
         private Wrestler wrestler;
         public deleteBackgroundTread(Wrestler wrestler){
             this.wrestler = wrestler;
@@ -183,6 +187,17 @@ public class EditWrestlerActivity extends AppCompatActivity {
         @Override
         public void run(){
             wrestlerDB.getWrestlerDao().deleteWrestlerByID(wrestler.id);
+        }
+    }
+    /*
+     * Background thread that sets up Roster from accessing data from the database
+     */
+    private class RosterThread extends Thread{
+        public RosterThread(){}
+
+        @Override
+        public void run(){
+            roster = (ArrayList<Wrestler>) wrestlerDB.getWrestlerDao().getAll();
         }
     }
 }
